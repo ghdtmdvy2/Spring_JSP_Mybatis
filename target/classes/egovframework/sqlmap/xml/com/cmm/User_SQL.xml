@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="userDao">
+	<select id="UserDao.getByUsername" parameterClass="egovframework.example.user.dto.UserDto" resultClass="HashMap">
+		<![CDATA[
+			SELECT * FROM USERS
+			WHERE username = #username#
+		]]>
+	</select>
+	<insert id="UserDao.create" parameterClass="egovframework.example.user.dto.UserDto">
+		<![CDATA[
+			INSERT INTO USERS(password, username) 
+			VALUES(#password#, #username#)
+		]]>
+	</insert>
+</sqlMap>

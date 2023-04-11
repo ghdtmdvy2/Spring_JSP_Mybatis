@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="articleDao">
+	<select id="ArticleDao.getListArticle" resultClass="HashMap">
+		<![CDATA[
+			SELECT * FROM article a
+        	INNER JOIN users u ON a.usersId = u.id
+		]]>
+	</select>
+	<update id="ArticleDao.modify" parameterClass="egovframework.example.article.dto.ArticleDto">
+			update article
+	        set subject = #subject#,
+	            content = #content#
+	        where id = #id#
+	</update>
+	<insert id="ArticleDao.create" parameterClass="egovframework.example.article.dto.ArticleDto">
+			insert into article(subject, content, usersId) 
+			values(#subject#, #content#, #usersId#)
+	</insert>
+	<delete id="ArticleDao.delete" parameterClass="egovframework.example.article.dto.ArticleDto"> 
+		<![CDATA[
+			delete from article where id = #id#
+		]]>
+	</delete>
+</sqlMap>
