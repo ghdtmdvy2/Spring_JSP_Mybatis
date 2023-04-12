@@ -3,15 +3,16 @@
 <sqlMap namespace="articleDao">
 	<select id="ArticleDao.getListArticle" resultClass="HashMap">
 		<![CDATA[
-			SELECT * FROM article a
-        	INNER JOIN users u ON a.usersId = u.id
+			SELECT * FROM ARTICLE A
+        	INNER JOIN USERS U ON A.USERSID = U.ID
+        	ORDER BY A.ID ASC;
 		]]>
 	</select>
 	<update id="ArticleDao.modify" parameterClass="egovframework.example.article.dto.ArticleDto">
-			update article
-	        set subject = #subject#,
-	            content = #content#
-	        where id = #id#
+			UPDATE ARTICLE
+	        SET SUBJECT = #subject#,
+	            CONTENT = #content#
+	        WHERE ID = #id#
 	</update>
 	<insert id="ArticleDao.create" parameterClass="egovframework.example.article.dto.ArticleDto">
 			insert into article(subject, content, usersId) 
@@ -22,4 +23,10 @@
 			delete from article where id = #id#
 		]]>
 	</delete>
+	<select id="ArticleDao.getArticle" parameterClass="egovframework.example.article.dto.ArticleDto" resultClass="egovframework.example.article.dto.ArticleDto">
+		<![CDATA[
+			SELECT * FROM article a
+			WHERE id = #id#
+		]]>
+	</select>
 </sqlMap>

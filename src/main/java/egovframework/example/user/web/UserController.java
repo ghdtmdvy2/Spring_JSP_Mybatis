@@ -12,12 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.example.session.util.SessionConst;
 import egovframework.example.user.dto.UserDto;
@@ -151,10 +148,10 @@ public class UserController {
         System.out.println(session.getId() + ", " + session.getAttribute("userMember"));
 
         //세션 데이터 출력
-        Enumeration<String> attributeNames = session.getAttributeNames();
+        Enumeration<?> attributeNames = session.getAttributeNames();
         
         while (attributeNames.hasMoreElements()) {
-            String name = attributeNames.nextElement();
+            String name = (String) attributeNames.nextElement();
             logger.info("session name ={}, value", name,session.getAttribute(name));
         }
 

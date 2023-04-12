@@ -11,13 +11,16 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.reflect.MethodDelegate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import egovframework.example.article.dto.ArticleDeleteForm;
+import egovframework.example.article.dto.ArticleDto;
 import egovframework.example.article.dto.ArticleModfiyForm;
 import egovframework.example.article.dto.ArticleSaveForm;
 import egovframework.example.article.service.ArticleService;
@@ -75,6 +78,19 @@ public class ArticleController {
 		model.addAttribute("userDto", userDto);
 		logger.info("articleList : {}", articleList);
 		return "article/list";
+	}
+	@RequestMapping(value="/{article_id}/article.do")
+	public String getArticle(@PathVariable(value="article_id") Long article_id, Model model) {
+		logger.info("getArticle");
+		logger.info("article_id : {}", article_id);
+		try {
+			ArticleDto article = articleService.getArticle(article_id);
+			model.addAttribute("article", article);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return "/article/detail";
 	}
 
 	/**

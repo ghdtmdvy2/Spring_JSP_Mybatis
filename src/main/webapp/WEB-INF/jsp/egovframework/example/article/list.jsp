@@ -16,6 +16,7 @@
 <P>  The time on the server is ${serverTime}. </P>
 	<c:forEach var="item" items="${articleList}">
 		<div id="article_${item.id}">
+			<a href="${item.id}/article.do">상세 페이지</a>
 			<form id="myForm_${item.id}" action="/article.do" method="post">
 				<input type="hidden" name = "_method" value = "put"/> 
 				<span>id : </span><input id="id_${item.id}" name="id" value="${item.id}" readOnly>

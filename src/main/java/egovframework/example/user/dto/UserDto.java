@@ -1,7 +1,5 @@
 package egovframework.example.user.dto;
 
-import org.apache.logging.log4j.core.appender.rolling.SizeBasedTriggeringPolicy;
-
 public class UserDto {
 
 	private Long id;

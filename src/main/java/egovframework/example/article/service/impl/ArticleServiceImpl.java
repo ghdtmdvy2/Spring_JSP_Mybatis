@@ -50,4 +50,11 @@ public class ArticleServiceImpl implements ArticleService {
 									.build();
 		articleDao.delete(articleDto);
 	}
+	@Override
+	public ArticleDto getArticle(Long article_id) throws SQLException {
+		ArticleDto articleDto = new ArticleDto.Builder()
+											  .id(article_id)
+											  .build();
+		return articleDao.getArticle(articleDto);
+	}
 }

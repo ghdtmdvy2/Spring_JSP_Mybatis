@@ -31,5 +31,9 @@ public class ArticleDao extends EgovComAbstractDAO{
 	public void delete(ArticleDto articleDto) throws SQLException {
 		getSqlMapClient().delete("ArticleDao.delete", articleDto);
 	}
+
+	public ArticleDto getArticle(ArticleDto articleDto) throws SQLException {
+		return (ArticleDto) getSqlMapClient().queryForObject("ArticleDao.getArticle",articleDto);
+	}
 	
 }

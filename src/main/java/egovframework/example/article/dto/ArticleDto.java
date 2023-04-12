@@ -10,7 +10,9 @@ public class ArticleDto {
 	private String subject;
 	private String content;
 	
-	
+	public ArticleDto() {
+		
+	}
 	public Long getUsersId() {
 		return usersId;
 	}

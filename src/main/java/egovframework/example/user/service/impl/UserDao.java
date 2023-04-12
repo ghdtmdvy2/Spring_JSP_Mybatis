@@ -1,13 +1,8 @@
 package egovframework.example.user.service.impl;
 
-import java.math.BigInteger;
-import java.util.HashMap;
-
-import org.hsqldb.rights.User;
 import org.springframework.stereotype.Repository;
 
 import egovframework.example.egov.service.impl.EgovComAbstractDAO;
-import egovframework.example.user.dto.SiteUser;
 import egovframework.example.user.dto.UserDto;
 
 @Repository
