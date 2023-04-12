@@ -13,7 +13,7 @@ import egovframework.example.article.dto.ArticleSaveForm;
 import egovframework.example.article.service.ArticleService;
 import egovframework.example.user.dto.UserDto;
 
-@Service("ArticleService")
+@Service
 public class ArticleServiceImpl implements ArticleService {
 //	@Resource(name = "HomeDao")
 	private final ArticleDao articleDao;
@@ -22,8 +22,11 @@ public class ArticleServiceImpl implements ArticleService {
 	public ArticleServiceImpl(ArticleDao homeDao) {
 		this.articleDao = homeDao;
 	}
-	public List<?> getListArticle() throws Exception {	
-		return articleDao.getListArticle();
+	public List<?> getListArticle(Long startIdx) throws Exception {	
+		ArticleDto articleDto = new ArticleDto.Builder()
+												.startIdx(startIdx)
+												.build();
+		return articleDao.getListArticle(articleDto);
 	}
 	public void modify(ArticleModfiyForm articleSaveForm) throws Exception {
 		ArticleDto articleDto = new ArticleDto.Builder()

@@ -4,11 +4,13 @@ import java.util.Objects;
 
 public class ArticleDto {
 	
+	
 	private Long id;
 	private Long usersId;
 	private String username;
 	private String subject;
 	private String content;
+	private Long startIdx;
 	
 	public ArticleDto() {
 		
@@ -43,7 +45,13 @@ public class ArticleDto {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+	public Long getStartIdx() {
+		return startIdx;
+	}
+	public void setStartIdx(Long startIdx) {
+		this.startIdx = startIdx;
+	}
+
 
 	@Override
 	public int hashCode() {
@@ -85,7 +93,7 @@ public class ArticleDto {
 		private String username = "";
 		private String subject = "";
 		private String content = "";
-		
+		private Long startIdx;
  
         public Builder() {
         }
@@ -110,6 +118,10 @@ public class ArticleDto {
         	content = val;
             return this;
         }
+        public Builder startIdx(Long val) {
+        	startIdx = val;
+            return this;
+        }
  
         public ArticleDto build() {
             return new ArticleDto(this);
@@ -123,5 +135,6 @@ public class ArticleDto {
 		username = builder.username;
 		subject = builder.subject;
 		content = builder.content;
+		startIdx = builder.startIdx;
     }
 }

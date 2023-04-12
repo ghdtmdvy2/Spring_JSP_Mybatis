@@ -10,7 +10,7 @@ import egovframework.example.article.dto.ArticleSaveForm;
 import egovframework.example.user.dto.UserDto;
 
 public interface ArticleService {
-	public List<?> getListArticle() throws Exception;
+	public List<?> getListArticle(Long startIdx) throws Exception;
 
 	public void modify(ArticleModfiyForm articleModifyForm) throws Exception;
 

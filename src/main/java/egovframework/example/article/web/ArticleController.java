@@ -3,8 +3,10 @@ package egovframework.example.article.web;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,6 +20,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mysql.cj.xdevapi.JsonParser;
 
 import egovframework.example.article.dto.ArticleDeleteForm;
 import egovframework.example.article.dto.ArticleDto;
@@ -41,7 +47,10 @@ public class ArticleController {
 	}
 
 	private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
-
+	@RequestMapping(value="/test")
+	public String test() {
+		return "test";
+	}
 	/**
 	 * 메인 화면
 	 * 
@@ -51,7 +60,41 @@ public class ArticleController {
 	public String main() {
 		return "redirect:/article.do";
 	}
-
+	
+	/**
+	 * @param model
+	 * @param session
+	 * @param startIdx
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/article.do", method = RequestMethod.GET, params="startIdx")
+	@ResponseBody
+	public List<ArticleDto> getAddArticle(Model model, HttpSession session, @RequestParam("startIdx") Long startIdx) throws Exception {
+		
+		logger.info("startIdx: {}", startIdx);
+		
+		// 게시물 목록 조회
+		List<ArticleDto> articleList = (List<ArticleDto>) articleService.getListArticle(startIdx);
+		model.addAttribute("articleList", articleList);
+		UserDto userDto = (UserDto) session.getAttribute("loginMember");
+		model.addAttribute("userDto", userDto);
+		logger.info("articleList : {}", articleList);
+//		Map<String, List<?>> jsonData = new HashMap<>();
+//		jsonData.put("articleList", articleList);
+		for (int i = 0; i<articleList.size(); i++) {
+			ArticleDto articleDto = articleList.get(i);
+			logger.info("articleList.get(i).getUsername() : {}", articleList.get(i).getUsername());
+			logger.info("articleList.get(i).getId() : {}", articleList.get(i).getId());
+			logger.info("articleList.get(i).getContent() : {}", articleList.get(i).getContent());
+		}
+//		for (ArticleDto articleDto : articleList) {
+//			logger.info("articleDto.username : {}", articleDto.getUsername());
+//			logger.info("articleDto.id : {}", articleDto.getId());
+//			logger.info("articleDto.content : {}", articleDto.getContent());
+//		}
+		return articleList;
+	}
 	/**
 	 * 게시물 목록
 	 * 
@@ -61,9 +104,9 @@ public class ArticleController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/article.do", method = RequestMethod.GET)
-	public String getArticles(Locale locale, Model model, HttpSession session) throws Exception {
+	public String getArticles(Locale locale, Model model, HttpSession session, @RequestParam(defaultValue="0")Long startIdx) throws Exception {
 		logger.info("Welcome home! The client locale is {}.", locale);
-
+		logger.info("startIdx: {}", startIdx);
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 
@@ -72,13 +115,19 @@ public class ArticleController {
 		model.addAttribute("serverTime", formattedDate);
 
 		// 게시물 목록 조회
-		List<?> articleList = articleService.getListArticle();
+		List<?> articleList = articleService.getListArticle(startIdx);
 		model.addAttribute("articleList", articleList);
 		UserDto userDto = (UserDto) session.getAttribute("loginMember");
 		model.addAttribute("userDto", userDto);
 		logger.info("articleList : {}", articleList);
 		return "article/list";
 	}
+	/**
+	 * 게시물 상세 페이지
+	 * @param article_id // 게시물 id 값
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value="/{article_id}/article.do")
 	public String getArticle(@PathVariable(value="article_id") Long article_id, Model model) {
 		logger.info("getArticle");

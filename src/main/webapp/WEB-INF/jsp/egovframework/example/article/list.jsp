@@ -44,7 +44,8 @@
 	         
          </div>
 	</c:forEach>
-	
+    <button onclick="getMoreArticle()">더보기</button>
+    
 	<form action="/article.do" method="post">
 	            제목 : <input name="subject" value="test">
 	            내용 : <input name="content" value="test">
@@ -85,46 +86,6 @@
                 pathForm.appendChild(newButton);
             }
         }
-        /*
-        function button_submit(articleId){
-            const parent = document.querySelector("#article_"+articleId);
-            const button = document.getElementById("myButton_"+articleId);
-            const inputList = parent.querySelectorAll("input");
-            const inputContent = inputList[3];
-            const inputSubject = inputList[4];
-            const articleContent = inputContent.value;
-            const articleSubject = inputSubject.value;
-            console.log(button);
-            console.log(articleId);
-            console.log(articleContent);
-            console.log(articleSubject);
-            
-            $.ajax({
-                type : 'put',           // 타입 (get, post, put 등등)
-                url : '/article.do' ,           // 요청할 서버 url
-                async : true,            // 비동기화 여부 (default : true)
-                data : {
-                    articleId : articleId,
-                    articleSubject : articleSubject,
-                    articleContent : articleContent
-                }
-                // ,
-                // beforeSend: function(xhr) {
-                //    const token = $("meta[name='_csrf']").attr("content");
-                //    const header = $("meta[name='_csrf_header']").attr("content");
-                //    console.log(token);
-                //    console.log(header);
-                //    xhr.setRequestHeader(header, token);
-                // }
-                ,
-                success : function(result) { // 결과 성공 콜백함수
-                    console.log(result);
-                },
-                error : function(request, status, error) { // 결과 에러 콜백함수
-                    console.log(error)
-                }
-            }) 
-        } */
         function articleDelete(articleId){
             const parent = document.querySelector("#article_"+articleId);
             parent.remove();
@@ -135,6 +96,7 @@
                 data : {
                     articleId : articleId
                 }
+                // csrf 적용 시 csrf 토큰 발급. 
                 // ,
                 // beforeSend: function(xhr) {
                 //    const token = $("meta[name='_csrf']").attr("content");
@@ -144,6 +106,36 @@
                 ,
                 success : function(result) { // 결과 성공 콜백함수
                     console.log(result);
+                },
+                error : function(request, status, error) { // 결과 에러 콜백함수
+                    console.log(error)
+                }
+            })
+        }
+        var displayNum = 0; // 게시글 보여주기 수
+        function getMoreArticle(){
+        	const addDisplayNum = 3; // 추가 게시글 보여주기 숫자
+        	displayNum += addDisplayNum;
+        	$.ajax({
+                type : 'get',           // 타입 (get, post, put 등등)
+                dataType : 'json',
+                url : '/article.do' ,           // 요청할 서버 url
+                async : true,            // 비동기화 여부 (default : true)
+                data : {
+                	startIdx : displayNum
+                }
+                // csrf 적용 시 csrf 토큰 발급. 
+                // ,
+                // beforeSend: function(xhr) {
+                //    const token = $("meta[name='_csrf']").attr("content");
+                //    const header = $("meta[name='_csrf_header']").attr("content");
+                //    xhr.setRequestHeader(header, token);
+                // }
+                ,
+                success : function(result) { // 결과 성공 콜백함수
+                	// const articleList = result.articles;
+                    // console.log(articleList);
+                    console.log("success");
                 },
                 error : function(request, status, error) { // 결과 에러 콜백함수
                     console.log(error)

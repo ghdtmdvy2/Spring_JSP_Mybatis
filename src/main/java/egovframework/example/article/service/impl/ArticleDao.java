@@ -12,8 +12,8 @@ import egovframework.example.egov.service.impl.EgovComAbstractDAO;
 
 @Repository("ArticleDao")
 public class ArticleDao extends EgovComAbstractDAO{
-	public List getListArticle() throws Exception {
-		return getSqlMapClient().queryForList("ArticleDao.getListArticle");
+	public List getListArticle(ArticleDto articleDto) throws Exception {
+		return getSqlMapClient().queryForList("ArticleDao.getListArticle",articleDto);
 	}
 
 	public void modify(String articleId, String articleSubject, String articleContent) {
