@@ -46,7 +46,7 @@
 	         </div>
 		</c:forEach>
 	</div>
-    <button onclick="getMoreArticle()">더보기</button>
+    <button id="moreArticle" onclick="getMoreArticle()">더보기  1/${articleCnt}</button>
     
 	<form action="/article.do" method="post">
 	            제목 : <input name="subject" value="test">
@@ -114,71 +114,79 @@
                 }
             })
         }
+        const ADD_DISPLAY_NUM = 3; // 추가 게시글 보여주기 숫자
         var displayNum = 0; // 게시글 보여주기 수
+        var articleCount = 1;
         var prevNum = displayNum;
         function getMoreArticle(){
-        	const addDisplayNum = 3; // 추가 게시글 보여주기 숫자
-        	displayNum += addDisplayNum;
-        	$.ajax({
-                type : 'get',           // 타입 (get, post, put 등등)
-                url : '/article.do' ,           // 요청할 서버 url
-                dataType: 'json',
-                contentType: 'application/json; charset=UTF-8',
-                async : true,            // 비동기화 여부 (default : true)
-                data : {
-                	startIdx : displayNum
-                }
-                // csrf 적용 시 csrf 토큰 발급. 
-                // ,
-                // beforeSend: function(xhr) {
-                //    const token = $("meta[name='_csrf']").attr("content");
-                //    const header = $("meta[name='_csrf_header']").attr("content");
-                //    xhr.setRequestHeader(header, token);
-                // }
-                ,
-                success : function(result) {
-                	var html = "<div id='articleStart_"+displayNum+"'>"
-                    console.log(result);
-                    console.log("success");
-                    result.forEach(function(item) {
-                    	  console.log(item.content + ", " + item.subject);
-                    	  html += "<div id='article_"+item.id+"'>"
-                  			+ "<a href='"+item.id+"/article.do'>상세 페이지</a>"
-                  			+ "<form id='myForm_"+item.id+"' action='/article.do' method='post'>"
-                  			+ "<input type='hidden' name = '_method' value = 'put'/>" 
-                  			+ "<span>id : </span><input id='id_"+item.id+"' name='id' value='"+item.id+"' readOnly>"
-                  			+		"</br>"
-                  			+ "<span>username : </span><input id='username_"+item.id+"' value='"+item.username+"' readOnly>"
-                  			+		"</br>"
-                  			+	"<span>usersId : </span><input id='usersId_"+item.id+"' value='"+item.usersId+"' readOnly>"
-                  			+  	  	"</br>"
-                  			+	"<span>subject :</span><input id='subject_"+item.id+"' name='subject' value='"+item.subject+"' readOnly>"
-                  			+	  	"</br>"
-                  			+	"<span>content : </span><input id='content_"+item.id+"' name='content' value='"+item.content+"' readOnly>"
-                  			+		"</br>"
-                  			if (${userDto.id} == 1) {
-                  				html += "<button id='myButton_"+item.id+"' type='button' onclick='articleModify("+item.id+")'>수정</button>"
-                  			}
-                  	        html += "</form>"
-               	        	if (${userDto.id} == 1) {
-                   				html +=        "<form id='myForm_delete_"+item.id+"'  method='post'>"
-                      			+        	"<input type='hidden' name = '_method' value = 'delete'/>" 
-                      			+        	"<input name='id' value="+item.id+" hidden>"
-                      			+        	"<button type='submit'>삭제</button>"
-                      			+         "</form>"
-                   			}
-                            html += "</div>"
-                    	});
-                    console.log(html);
-                    html += "</div>"
-                    var prevDiv = $("#articleStart_"+prevNum);
-                    prevNum += 3;
-                    prevDiv.after(html);
-                },
-                error : function(request, status, error) { // 결과 에러 콜백함수
-                    console.log(error)
-                }
-            })
+        	if (articleCount < ${articleCnt}){
+            	displayNum += ADD_DISPLAY_NUM;
+            	articleCount++;
+            	const text = "더보기 " + articleCount + "/" + ${articleCnt};
+            	console.log(text);
+            	$("#moreArticle").text(text);
+        		$.ajax({
+                    type : 'get',           // 타입 (get, post, put 등등)
+                    url : '/article.do' ,           // 요청할 서버 url
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8',
+                    async : true,            // 비동기화 여부 (default : true)
+                    data : {
+                    	startIdx : displayNum
+                    }
+                    // csrf 적용 시 csrf 토큰 발급. 
+                    // ,
+                    // beforeSend: function(xhr) {
+                    //    const token = $("meta[name='_csrf']").attr("content");
+                    //    const header = $("meta[name='_csrf_header']").attr("content");
+                    //    xhr.setRequestHeader(header, token);
+                    // }
+                    ,
+                    success : function(result) {
+                    	var html = "<div id='articleStart_"+displayNum+"'>"
+                        console.log(result);
+                        console.log("success");
+                        result.forEach(function(item) {
+                        	  console.log(item.content + ", " + item.subject);
+                        	  html += "<div id='article_"+item.id+"'>"
+                      			+ "<a href='"+item.id+"/article.do'>상세 페이지</a>"
+                      			+ "<form id='myForm_"+item.id+"' action='/article.do' method='post'>"
+                      			+ "<input type='hidden' name = '_method' value = 'put'/>" 
+                      			+ "<span>id : </span><input id='id_"+item.id+"' name='id' value='"+item.id+"' readOnly>"
+                      			+		"</br>"
+                      			+ "<span>username : </span><input id='username_"+item.id+"' value='"+item.username+"' readOnly>"
+                      			+		"</br>"
+                      			+	"<span>usersId : </span><input id='usersId_"+item.id+"' value='"+item.usersId+"' readOnly>"
+                      			+  	  	"</br>"
+                      			+	"<span>subject :</span><input id='subject_"+item.id+"' name='subject' value='"+item.subject+"' readOnly>"
+                      			+	  	"</br>"
+                      			+	"<span>content : </span><input id='content_"+item.id+"' name='content' value='"+item.content+"' readOnly>"
+                      			+		"</br>"
+                      			if (${userDto.id} == 1) {
+                      				html += "<button id='myButton_"+item.id+"' type='button' onclick='articleModify("+item.id+")'>수정</button>"
+                      			}
+                      	        html += "</form>"
+                   	        	if (${userDto.id} == 1) {
+                       				html +=        "<form id='myForm_delete_"+item.id+"'  method='post'>"
+                          			+        	"<input type='hidden' name = '_method' value = 'delete'/>" 
+                          			+        	"<input name='id' value="+item.id+" hidden>"
+                          			+        	"<button type='submit'>삭제</button>"
+                          			+         "</form>"
+                       			}
+                                html += "</div>"
+                        	});
+                        console.log(html);
+                        html += "</div>"
+                        var prevDiv = $("#articleStart_"+prevNum);
+                        prevNum += ADD_DISPLAY_NUM;
+                        prevDiv.after(html);
+                    },
+                    error : function(request, status, error) { // 결과 에러 콜백함수
+                        console.log(error)
+                    }
+                })
+        		
+        	}
         }
     </script>
 </html>

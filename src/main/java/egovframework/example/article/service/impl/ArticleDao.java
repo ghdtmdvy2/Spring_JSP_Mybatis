@@ -35,5 +35,9 @@ public class ArticleDao extends EgovComAbstractDAO{
 	public ArticleDto getArticle(ArticleDto articleDto) throws SQLException {
 		return (ArticleDto) getSqlMapClient().queryForObject("ArticleDao.getArticle",articleDto);
 	}
+
+	public Integer getArticleCnt() throws SQLException {
+		return (Integer) getSqlMapClient().queryForObject("ArticleDao.getArticleCnt");
+	}
 	
 }

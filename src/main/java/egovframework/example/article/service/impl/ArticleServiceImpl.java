@@ -60,4 +60,8 @@ public class ArticleServiceImpl implements ArticleService {
 											  .build();
 		return articleDao.getArticle(articleDto);
 	}
+	@Override
+	public Integer getArticleCnt() throws SQLException {
+		return articleDao.getArticleCnt();
+	}
 }

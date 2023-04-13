@@ -30,4 +30,9 @@
 			WHERE id = #id#
 		]]>
 	</select>
+	<select id="ArticleDao.getArticleCnt" resultClass="Integer">
+		<![CDATA[
+			SELECT COUNT(A.id) FROM ARTICLE A;
+		]]>
+	</select>
 </sqlMap>

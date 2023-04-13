@@ -19,4 +19,6 @@ public interface ArticleService {
 	public void delete(ArticleDeleteForm articleDeteleForm) throws SQLException;
 
 	public ArticleDto getArticle(Long article_id) throws SQLException;
+
+	public Integer getArticleCnt() throws SQLException;
 }

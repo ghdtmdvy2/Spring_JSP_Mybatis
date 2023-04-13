@@ -109,10 +109,14 @@ public class ArticleController {
 
 		// 게시물 목록 조회
 		List<?> articleList = articleService.getListArticle(startIdx);
+		// 게시물 수 조회
+		Integer articleCnt = articleService.getArticleCnt();
 		model.addAttribute("articleList", articleList);
 		UserDto userDto = (UserDto) session.getAttribute("loginMember");
 		model.addAttribute("userDto", userDto);
 		model.addAttribute("startIdx", startIdx);
+		int articleCount = (int) Math.ceil((double)articleCnt / 3);
+		model.addAttribute("articleCnt",articleCount);
 		logger.info("articleList : {}", articleList);
 		return "article/list";
 	}
