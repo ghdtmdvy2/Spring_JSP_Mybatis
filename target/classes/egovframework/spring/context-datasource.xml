@@ -26,6 +26,10 @@
         <property name="validationQuery" value="select 1"/>
     </bean>
     
+    <!-- Ajax Json View Start -->
+	<bean name="ajaxLoadView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+	<!-- Ajax Json View End -->
+	
     <!-- lob Handler -->
     <bean id="lobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler" lazy-init="true" />
 

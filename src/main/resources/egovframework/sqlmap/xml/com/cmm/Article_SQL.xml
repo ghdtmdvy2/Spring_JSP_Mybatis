@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
 <sqlMap namespace="articleDao">
-	<select id="ArticleDao.getListArticle" parameterClass="egovframework.example.article.dto.ArticleDto" resultClass="HashMap">
+	<select id="ArticleDao.getListArticle" parameterClass="egovframework.example.article.dto.ArticleDto" resultClass="egovframework.example.article.dto.ArticleDto">
 		<![CDATA[
 			SELECT * FROM ARTICLE A
         	INNER JOIN USERS U ON A.USERSID = U.ID

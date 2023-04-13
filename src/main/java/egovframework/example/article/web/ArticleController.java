@@ -8,12 +8,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.reflect.MethodDelegate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mysql.cj.xdevapi.JsonParser;
+import com.mysql.cj.xdevapi.JsonArray;
 
 import egovframework.example.article.dto.ArticleDeleteForm;
 import egovframework.example.article.dto.ArticleDto;
@@ -31,6 +32,8 @@ import egovframework.example.article.dto.ArticleModfiyForm;
 import egovframework.example.article.dto.ArticleSaveForm;
 import egovframework.example.article.service.ArticleService;
 import egovframework.example.user.dto.UserDto;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 /**
  * @author 홍승표
@@ -61,39 +64,29 @@ public class ArticleController {
 		return "redirect:/article.do";
 	}
 	
+	
 	/**
+	 * 게시글 더보기
+	 * @param response
 	 * @param model
 	 * @param session
 	 * @param startIdx
-	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/article.do", method = RequestMethod.GET, params="startIdx")
 	@ResponseBody
-	public List<ArticleDto> getAddArticle(Model model, HttpSession session, @RequestParam("startIdx") Long startIdx) throws Exception {
+	public void getAddArticle(HttpServletResponse response,Model model, HttpSession session, @RequestParam("startIdx") Long startIdx) throws Exception {
 		
 		logger.info("startIdx: {}", startIdx);
 		
 		// 게시물 목록 조회
-		List<ArticleDto> articleList = (List<ArticleDto>) articleService.getListArticle(startIdx);
-		model.addAttribute("articleList", articleList);
-		UserDto userDto = (UserDto) session.getAttribute("loginMember");
-		model.addAttribute("userDto", userDto);
+		List<ArticleDto> articleList = articleService.getListArticle(startIdx);
+		
 		logger.info("articleList : {}", articleList);
-//		Map<String, List<?>> jsonData = new HashMap<>();
-//		jsonData.put("articleList", articleList);
-		for (int i = 0; i<articleList.size(); i++) {
-			ArticleDto articleDto = articleList.get(i);
-			logger.info("articleList.get(i).getUsername() : {}", articleList.get(i).getUsername());
-			logger.info("articleList.get(i).getId() : {}", articleList.get(i).getId());
-			logger.info("articleList.get(i).getContent() : {}", articleList.get(i).getContent());
-		}
-//		for (ArticleDto articleDto : articleList) {
-//			logger.info("articleDto.username : {}", articleDto.getUsername());
-//			logger.info("articleDto.id : {}", articleDto.getId());
-//			logger.info("articleDto.content : {}", articleDto.getContent());
-//		}
-		return articleList;
+
+		JSONArray jsonArray = JSONArray.fromObject(articleList);
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(jsonArray);
 	}
 	/**
 	 * 게시물 목록
@@ -119,6 +112,7 @@ public class ArticleController {
 		model.addAttribute("articleList", articleList);
 		UserDto userDto = (UserDto) session.getAttribute("loginMember");
 		model.addAttribute("userDto", userDto);
+		model.addAttribute("startIdx", startIdx);
 		logger.info("articleList : {}", articleList);
 		return "article/list";
 	}

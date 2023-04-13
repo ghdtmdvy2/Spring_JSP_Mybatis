@@ -22,7 +22,7 @@ public class ArticleServiceImpl implements ArticleService {
 	public ArticleServiceImpl(ArticleDao homeDao) {
 		this.articleDao = homeDao;
 	}
-	public List<?> getListArticle(Long startIdx) throws Exception {	
+	public List<ArticleDto> getListArticle(Long startIdx) throws Exception {	
 		ArticleDto articleDto = new ArticleDto.Builder()
 												.startIdx(startIdx)
 												.build();

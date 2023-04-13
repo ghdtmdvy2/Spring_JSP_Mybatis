@@ -12,7 +12,7 @@ import egovframework.example.egov.service.impl.EgovComAbstractDAO;
 
 @Repository("ArticleDao")
 public class ArticleDao extends EgovComAbstractDAO{
-	public List getListArticle(ArticleDto articleDto) throws Exception {
+	public List<ArticleDto> getListArticle(ArticleDto articleDto) throws Exception {
 		return getSqlMapClient().queryForList("ArticleDao.getListArticle",articleDto);
 	}
 
