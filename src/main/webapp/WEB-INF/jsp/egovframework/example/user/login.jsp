@@ -6,8 +6,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
+<% 
+	String url = request.getContextPath();
+%>
 <body>
-	<a href="/user/signup.do">회원가입</a>
+dd
+	<a href="${pageContext.request.contextPath}">jj</a>
+	<%=url %>
+	<a href="<%=url%>/signup.do">회원가입</a>
 	<form class="form-signin" action="/user/login.do" method="POST">
 		<input type="text" name="username" class="form-control" placeholder="ID" required autofocus>
 		<input type="password" name="password" class="form-control" placeholder="Password" required>

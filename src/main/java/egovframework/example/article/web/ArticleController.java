@@ -3,28 +3,26 @@ package egovframework.example.article.web;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.mysql.cj.xdevapi.JsonArray;
 
 import egovframework.example.article.dto.ArticleDeleteForm;
 import egovframework.example.article.dto.ArticleDto;
@@ -33,7 +31,6 @@ import egovframework.example.article.dto.ArticleSaveForm;
 import egovframework.example.article.service.ArticleService;
 import egovframework.example.user.dto.UserDto;
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 /**
  * @author 홍승표
@@ -143,12 +140,16 @@ public class ArticleController {
 	/**
 	 * 게시물 작성
 	 * 
-	 * @param content
+	 * @param content 
 	 * @param subject
-	 * @return
+	 * @return 
 	 */
 	@RequestMapping(value = "/article.do", method = RequestMethod.POST)
-	public String createArticle(@ModelAttribute ArticleSaveForm articleSaveForm, HttpSession session) {
+	public String createArticle(@ModelAttribute @Valid ArticleSaveForm articleSaveForm, BindingResult bindingResult, HttpSession session) {
+		if (bindingResult.hasErrors()) {
+			logger.info("bindingResult : {}", bindingResult.getErrorCount());
+		}
+		logger.info("bindingResult : {}",bindingResult.getErrorCount());
 		UserDto loginUser = (UserDto) session.getAttribute("loginMember");
 		logger.info("articleSaveForm", articleSaveForm.getContent() + articleSaveForm.getSubject());
 		try {

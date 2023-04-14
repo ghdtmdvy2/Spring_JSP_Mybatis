@@ -1,11 +1,16 @@
 package egovframework.example.article.dto;
 
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.validation.annotation.Validated;
+
+@Validated
 public class ArticleSaveForm {
-	@NotBlank
+	@NotBlank(message = "실패")
 	private String subject;
-	@NotBlank
+	@NotBlank(message = "실패")
 	private String content;
 	public String getSubject() {
 		return subject;

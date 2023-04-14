@@ -15,6 +15,7 @@
 </form>
 
 <P>  The time on the server is ${serverTime}. </P>
+	
 	<div id="articleStart_${startIdx}">
 		<c:forEach var="item" items="${articleList}">
 			<div id="article_${item.id}">
